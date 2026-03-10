@@ -13,6 +13,22 @@ telescope.setup({
 
   defaults = {
 
+    vimgrep_arguments = {
+      "rg",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--binary-files=without-match",
+    },
+
+    file_ignore_patterns = {
+      "%.o$", "%.a$", "%.so$", "%.pyc$", "%.dll$", "%.exe$",
+      "%.png$", "%.jpg$", "%.jpeg$", "%.gif$", "%.ico$", "%.pdf$",
+      "%.zip$", "%.tar%.gz$", "%.rar$", "%.rmeta$",
+    },
+
     layout_strategy = "horizontal",
 
     layout_config = {
