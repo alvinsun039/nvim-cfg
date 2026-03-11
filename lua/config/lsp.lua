@@ -38,109 +38,89 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 vim.lsp.config("rust_analyzer", {
-
   capabilities = capabilities,
-
   settings = {
     ["rust-analyzer"] = {
-
       cargo = {
         buildScripts = { enable = false }
       },
-
       procMacro = {
         enable = true
       },
-
       checkOnSave = false,
     }
   }
-
 })
 
-vim.lsp.enable("rust_analyzer")
+vim.lsp.config("clangd", {
+  capabilities = capabilities,
+  cmd = {
+    "clangd",
+    "--background-index",
+    "--clang-tidy",
+    "--header-insertion=never"
+  }
+})
 
 
--- vim.lsp.config("clangd", {
--- 
---   capabilities = capabilities,
--- 
---   cmd = {
---     "clangd",
---     "--background-index",
---     "--clang-tidy",
---     "--header-insertion=never"
---   }
--- 
+-- vim.lsp.config("ccls", {
+--   init_options = {
+--     cache = {
+--       directory = '.ccls-cache',
+--     },
+--     index = {
+--       threads = 4,
+--     },
+--     clang = {
+--       extraArgs = { '-I/usr/include', '-I/usr/local/include', '--gcc-toolchain=/usr' },
+--       excludeArgs = {
+--         "-mstack-protector-guard-reg=sp_el0",
+--         "-mstack-protector-guard-offset=1384",
+--         "-mabi=lp64",
+--         "-fconserve-stack",
+--         "-falign-jumps=1",
+--         "-falign-loops=1",
+--         "-fconserve-stack",
+--         "-fmerge-constants",
+--         "-fno-code-hoisting",
+--         "-fno-schedule-insns",
+--         "-fno-sched-pressure",
+--         "-fno-var-tracking-assignments",
+--         "-fsched-pressure",
+--         "-mhard-float",
+--         "-mindirect-branch-register",
+--         "-mindirect-branch=thunk-inline",
+--         "-mpreferred-stack-boundary=2",
+--         "-mpreferred-stack-boundary=3",
+--         "-mpreferred-stack-boundary=4",
+--         "-mrecord-mcount",
+--         "-mindirect-branch=thunk-extern",
+--         "-mno-fp-ret-in-387",
+--         "-mskip-rax-setup",
+--         "--param=allow-store-data-races=0",
+--         "-Wa,arch/x86/kernel/macros.s",
+--         "-Wa,-",
+--       },
+--     },
+--   },
 -- })
--- 
--- vim.lsp.enable("clangd")
-
-
-vim.lsp.config("ccls", {
-  init_options = {
-    cache = {
-      directory = '.ccls-cache',
-    },
-    index = {
-      threads = 4,
-    },
-    clang = {
-      extraArgs = { '-I/usr/include', '-I/usr/local/include', '--gcc-toolchain=/usr' },
-      excludeArgs = {
-        "-mstack-protector-guard-reg=sp_el0",
-        "-mstack-protector-guard-offset=1384",
-        "-mabi=lp64",
-        "-fconserve-stack",
-        "-falign-jumps=1",
-        "-falign-loops=1",
-        "-fconserve-stack",
-        "-fmerge-constants",
-        "-fno-code-hoisting",
-        "-fno-schedule-insns",
-        "-fno-sched-pressure",
-        "-fno-var-tracking-assignments",
-        "-fsched-pressure",
-        "-mhard-float",
-        "-mindirect-branch-register",
-        "-mindirect-branch=thunk-inline",
-        "-mpreferred-stack-boundary=2",
-        "-mpreferred-stack-boundary=3",
-        "-mpreferred-stack-boundary=4",
-        "-mrecord-mcount",
-        "-mindirect-branch=thunk-extern",
-        "-mno-fp-ret-in-387",
-        "-mskip-rax-setup",
-        "--param=allow-store-data-races=0",
-        "-Wa,arch/x86/kernel/macros.s",
-        "-Wa,-",
-      },
-    },
-  },
-})
-
-vim.lsp.enable("ccls")
 
 vim.lsp.config("lua_ls", {
+  capabilities = capabilities,
   settings = {
     Lua = {
       runtime = {
         version = "LuaJIT",
       },
-
       diagnostics = {
         globals = { "vim" },
       },
-
       workspace = {
         library = vim.api.nvim_get_runtime_file("", true),
       },
-
       telemetry = {
         enable = false,
       },
     },
   },
 })
-
-vim.lsp.enable("lua_ls")
