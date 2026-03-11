@@ -158,13 +158,62 @@ require("lazy").setup({
     "lewis6991/gitsigns.nvim",
     config = function()
       require("gitsigns").setup({
+        preview_config = {
+          border = "rounded",
+        },
         on_attach = function(bufnr)
           local gs = require("gitsigns")
 
           -- shared opts for all keymaps
           local opts = { buffer = bufnr, noremap = true, silent = true }
 
-          vim.keymap.set('n', '<leader>hs', gs.preview_hunk, vim.tbl_extend('force', opts, { desc = "Preview hunk" }))
+          -- Navigation: jump to previous/next hunk
+          vim.keymap.set('n', ']c', function()
+            if vim.wo.diff then return ']c' end
+            vim.schedule(function() gs.next_hunk() end)
+            return '<Ignore>'
+          end, { expr = true, buffer = bufnr, desc = 'Next hunk' })
+
+          vim.keymap.set('n', '[c', function()
+            if vim.wo.diff then return '[c' end
+            vim.schedule(function() gs.prev_hunk() end)
+            return '<Ignore>'
+          end, { expr = true, buffer = bufnr, desc = 'Prev hunk' })
+
+          -- Actions: use vim.tbl_extend to correctly merge opts and desc
+          vim.keymap.set('n', '<leader>hs', gs.preview_hunk,
+          vim.tbl_extend('force', opts, { desc = 'Preview hunk' }))
+
+          vim.keymap.set('n', '<leader>hr', gs.reset_hunk,
+          vim.tbl_extend('force', opts, { desc = 'Reset hunk' }))
+
+          vim.keymap.set('n', '<leader>hR', gs.reset_buffer,
+          vim.tbl_extend('force', opts, { desc = 'Reset buffer' }))
+
+          vim.keymap.set('n', '<leader>hu', gs.undo_stage_hunk,
+          vim.tbl_extend('force', opts, { desc = 'Undo stage hunk' }))
+
+          vim.keymap.set('n', '<leader>hp', gs.preview_hunk_inline,
+          vim.tbl_extend('force', opts, { desc = 'Preview hunk inline' }))
+
+          vim.keymap.set('n', '<leader>hb', function() gs.blame_line { full = true } end,
+          vim.tbl_extend('force', opts, { desc = 'Blame line' }))
+
+          vim.keymap.set('n', '<leader>hd', gs.diffthis,
+          vim.tbl_extend('force', opts, { desc = 'Diff this' }))
+
+          vim.keymap.set('n', '<leader>hD', function() gs.diffthis('~') end,
+          vim.tbl_extend('force', opts, { desc = 'Diff this ~' }))
+
+          vim.keymap.set('n', '<leader>hx', gs.toggle_deleted,
+          vim.tbl_extend('force', opts, { desc = 'Toggle deleted' }))
+
+          -- Text objects
+          vim.keymap.set('o', 'ih', ':<C-U>Gitsigns select_hunk<CR>',
+          vim.tbl_extend('force', opts, { desc = 'Select hunk' }))
+
+          vim.keymap.set('x', 'ih', ':<C-U>Gitsigns select_hunk<CR>',
+          vim.tbl_extend('force', opts, { desc = 'Select hunk' }))
         end
       })
     end
