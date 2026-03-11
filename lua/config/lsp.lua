@@ -7,6 +7,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     --    vim.keymap.set("n","gd",vim.lsp.buf.definition,opts)
     --    vim.keymap.set("n","gr",vim.lsp.buf.references,opts)
+    -- Hover uses default handler; border comes from vim.o.winborder (init.lua)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, vim.tbl_extend("force", opts, { desc = "Hover" }))
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "Rename symbol" }))
 

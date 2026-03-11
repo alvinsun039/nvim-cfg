@@ -8,6 +8,9 @@ require("config.treesitter")
 require("config.telescope")
 require("config.mason")
 
+-- Default border for all floating windows (LSP hover, diagnostic, etc.); Neovim 0.11+ no longer uses global LSP handlers for this
+vim.o.winborder = "rounded"
+
 -- Core editor options
 vim.o.number = true
 vim.o.relativenumber = true
@@ -53,9 +56,12 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.o.updatetime = 250
+vim.diagnostic.config({
+  float = { border = "rounded" },
+})
 
 -- Show diagnostic float on CursorHold
+vim.o.updatetime = 250
 vim.api.nvim_create_autocmd("CursorHold", {
   callback = function()
     vim.diagnostic.open_float(nil, { focusable = false })
