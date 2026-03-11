@@ -55,6 +55,12 @@ require("lazy").setup({
 
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
 
+  {
+    "kylechui/nvim-surround",
+    version = "^4.0.0",
+    event = "VeryLazy",
+  },
+
   {"nvim-telescope/telescope.nvim",
   dependencies = {"nvim-lua/plenary.nvim"}},
 
