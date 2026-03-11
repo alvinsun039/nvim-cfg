@@ -14,6 +14,19 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 
+  -- Smart yank: only copy to system clipboard on intentional yank (y), supports tmux/OSC52
+  {
+    "ibhagwan/smartyank.nvim",
+    config = function()
+      require("smartyank").setup({
+        -- highlight = { enabled = true, higroup = "IncSearch", timeout = 2000 },
+        -- clipboard = { enabled = true },
+        -- tmux = { enabled = true, cmd = { "tmux", "set-buffer", "-w" } },
+        -- osc52 = { enabled = true, ssh_only = true, silent = false, echo_hl = "Directory" },
+      })
+    end,
+  },
+
   {"neovim/nvim-lspconfig"},
 
   {
