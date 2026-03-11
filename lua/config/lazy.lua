@@ -296,40 +296,59 @@ require("lazy").setup({
     "akinsho/bufferline.nvim",
     version = "*",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-      options = {
-        mode = "buffers",
-        numbers = "ordinal",
-        close_command = "bdelete! %d",
-        right_mouse_command = "bdelete! %d",
-        left_mouse_command = "buffer %d",
-        indicator = { style = "icon", icon = "▎" },
-        buffer_close_icon = "",
-        modified_icon = "●",
-        close_icon = "",
-        left_trunc_marker = "",
-        right_trunc_marker = "",
-        max_name_length = 18,
-        max_prefix_length = 15,
-        truncate_names = true,
-        diagnostics = "nvim_lsp",
-        diagnostics_indicator = function(count, level)
-          local icon = level:match("error") and " " or " "
-          return icon .. count
-        end,
-        offsets = {
-          { filetype = "nvim-tree", text = "File Explorer", text_align = "center" },
+    config = function ()
+      require("bufferline").setup({
+        options = {
+          mode = "buffers",
+          numbers = "ordinal",
+          close_command = "bdelete! %d",
+          right_mouse_command = "bdelete! %d",
+          left_mouse_command = "buffer %d",
+          indicator = { style = "icon", icon = "▎" },
+          buffer_close_icon = "",
+          modified_icon = "●",
+          close_icon = "",
+          left_trunc_marker = "",
+          right_trunc_marker = "",
+          max_name_length = 18,
+          max_prefix_length = 15,
+          truncate_names = true,
+          diagnostics = "nvim_lsp",
+          diagnostics_indicator = function(count, level)
+            local icon = level:match("error") and " " or " "
+            return icon .. count
+          end,
+          offsets = {
+            { filetype = "nvim-tree", text = "File Explorer", text_align = "center" },
+          },
+          color_icons = true,
+          show_buffer_icons = false,
+          show_buffer_close_icons = true,
+          show_close_icon = true,
+          persist_buffer_sort = true,
+          separator_style = "thin",
+          enforce_regular_tabs = false,
+          always_show_bufferline = true,
         },
-        color_icons = true,
-        show_buffer_icons = true,
-        show_buffer_close_icons = true,
-        show_close_icon = true,
-        persist_buffer_sort = true,
-        separator_style = "slant",
-        enforce_regular_tabs = false,
-        always_show_bufferline = true,
-      },
-    },
+      })
+
+      -- Keymaps: bufferline quick switch
+      -- 1. Cycle buffers (Vim style)
+      vim.keymap.set('n', 'gt', ':BufferLineCycleNext<CR>', { noremap = true, silent = true, desc = "Next buffer" })
+      vim.keymap.set('n', 'gT', ':BufferLineCyclePrev<CR>', { noremap = true, silent = true, desc = "Prev buffer" })
+
+      -- 2. Jump by number (1-9)
+      for i = 1, 9 do
+        vim.keymap.set('n', '<leader>' .. i, ':BufferLineGoToBuffer ' .. i .. '<CR>', { noremap = true, silent = true })
+      end
+
+      -- 3. Pick mode (popup letter selection)
+      vim.keymap.set('n', '<leader>bg', ':BufferLinePick<CR>', { noremap = true, silent = true, desc = "Pick buffer" })
+
+      -- 4. Close current buffer
+      vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { noremap = true, silent = true, desc = "Delete buffer" })
+      vim.keymap.set('n', '<leader>bo', ':BufferLineCloseLeft<CR>:BufferLineCloseRight<CR>', { noremap = true, silent = true, desc = "Close others" })
+    end,
   },
   {
     "folke/which-key.nvim",
