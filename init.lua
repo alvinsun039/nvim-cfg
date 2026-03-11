@@ -20,6 +20,13 @@ vim.o.expandtab = false
 vim.o.smartindent = true
 vim.o.termguicolors = true
 
+-- Set maximum text width for automatic line wrapping
+vim.opt.textwidth = 80
+-- Continue comments when reformatting text
+vim.opt.formatoptions:append('c')
+-- Automatically insert comment leader on pressing Enter in a comment line
+vim.opt.formatoptions:append('r')
+
 -- Filetype-specific indentation
 local indent = vim.api.nvim_create_augroup("indent_settings", { clear = true })
 
