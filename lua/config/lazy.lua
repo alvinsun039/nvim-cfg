@@ -377,5 +377,21 @@ require("lazy").setup({
         { "<leader>x", group = "Diagnostics (Trouble)" },
       })
     end,
-  }
+  },
+  {
+    "potamides/pantran.nvim",
+    -- Note: requires Neovim >= 0.6.1 and curl >= 7.76.0 [citation:3]
+    config = function()
+      require("pantran").setup {
+        default_engine = "argos", -- default free engine, no config needed [citation:3]
+        -- add other engines here if you want to configure them later
+      }
+      -- recommended keymap config [citation:3]
+      local opts = { noremap = true, silent = true }
+      -- normal mode: <leader>tr followed by text object, e.g. <leader>trip translates current paragraph
+      vim.keymap.set("n", "<leader>tr", ":<C-U>lua require('pantran').motion_translate()<CR>", opts)
+      -- visual mode: select text then press <leader>tr to translate
+      vim.keymap.set("x", "<leader>tr", ":lua require('pantran').motion_translate()<CR>", opts)
+    end,
+  },
 })
