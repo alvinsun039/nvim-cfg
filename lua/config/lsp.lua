@@ -48,6 +48,13 @@ vim.lsp.config("rust_analyzer", {
         enable = true
       },
       checkOnSave = false,
+      inlayHints = {
+        enable = true,
+        typeHints = { enable = true },
+        parameterHints = { enable = true },
+        chainingHints = { enable = true },
+        maxLength = 25,
+      },
     }
   }
 })
