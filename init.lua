@@ -68,9 +68,9 @@ vim.diagnostic.config({
 })
 
 -- Show diagnostic float on CursorHold
-vim.o.updatetime = 250
-vim.api.nvim_create_autocmd("CursorHold", {
-  callback = function()
-    vim.diagnostic.open_float(nil, { focusable = false })
-  end
-})
+-- vim.o.updatetime = 250
+-- vim.api.nvim_create_autocmd("CursorHold", {
+--   callback = function()
+--     vim.diagnostic.open_float(nil, { focusable = false })
+--   end
+-- })
