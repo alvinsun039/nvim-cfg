@@ -378,7 +378,9 @@ require("lazy").setup({
         { "<leader>e", group = "File tree" },
         { "<leader>f", group = "Find (Telescope)" },
         { "<leader>h", group = "Git Hunk" },
+        { "<leader>p", group = "Pantran (translate)" },
         { "<leader>r", group = "LSP" },
+        { "<leader>t", group = "Terminal" },
         { "<leader>w", group = "LSP workspace" },
         { "<leader>x", group = "Diagnostics (Trouble)" },
       })
@@ -394,10 +396,34 @@ require("lazy").setup({
       }
       -- recommended keymap config [citation:3]
       local opts = { noremap = true, silent = true }
-      -- normal mode: <leader>tr followed by text object, e.g. <leader>trip translates current paragraph
-      vim.keymap.set("n", "<leader>tr", ":<C-U>lua require('pantran').motion_translate()<CR>", opts)
-      -- visual mode: select text then press <leader>tr to translate
-      vim.keymap.set("x", "<leader>tr", ":lua require('pantran').motion_translate()<CR>", opts)
+      -- normal mode: <leader>pt followed by text object, e.g. <leader>ptip translates current paragraph
+      vim.keymap.set("n", "<leader>pt", ":<C-U>lua require('pantran').motion_translate()<CR>", opts)
+      -- visual mode: select text then press <leader>pt to translate
+      vim.keymap.set("x", "<leader>pt", ":lua require('pantran').motion_translate()<CR>", opts)
+    end,
+  },
+
+  {
+    "waiting-for-dev/ergoterm.nvim",
+    config = function()
+      local ergoterm = require("ergoterm")
+
+      ergoterm.setup({
+        terminal_defaults = {
+          layout = "float",
+          float_opts = { border = "rounded" },
+          auto_scroll = true,
+          start_in_insert = true,
+        },
+        picker = { picker = "telescope" },
+      })
+
+      local main_term = ergoterm:new({ name = "main" })
+
+      vim.keymap.set("n", "<leader>tt", function() main_term:toggle() end, { desc = "Toggle terminal" })
+      vim.keymap.set("n", "<leader>tf", "<cmd>TermNew<CR>", { desc = "New terminal" })
+      vim.keymap.set("n", "<leader>ts", "<cmd>TermSelect<CR>", { desc = "Select terminal" })
+      vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
     end,
   },
 })
