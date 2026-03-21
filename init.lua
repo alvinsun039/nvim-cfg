@@ -83,3 +83,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end
   end,
 })
+
+-- Window splitting shortcuts
+vim.keymap.set('n', '<C-w>|', '<cmd>vsplit<CR>', { desc = 'Split window vertically (left-right)' })
+vim.keymap.set('n', '<C-w>-', '<cmd>split<CR>', { desc = 'Split window horizontally (top-bottom)' })
