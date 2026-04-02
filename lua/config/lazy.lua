@@ -125,7 +125,7 @@ require("lazy").setup({
       },
       filters = {
         dotfiles = true,
-        custom = {},
+        custom = { "%.o$", "%.a$", "%.mod$" },
         exclude = {},
       },
       update_focused_file = {
