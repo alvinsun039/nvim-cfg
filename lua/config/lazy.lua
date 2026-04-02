@@ -281,6 +281,16 @@ require("lazy").setup({
     end
   },
   {
+    "SmiteshP/nvim-navic",
+    dependencies = "neovim/nvim-lspconfig",
+    config = function()
+      require("nvim-navic").setup({
+        highlight = true,
+        lsp = { auto_attach = true },
+      })
+    end
+  },
+  {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" }, -- optional, file icons
     config = function()
