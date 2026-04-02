@@ -303,7 +303,7 @@ require("lazy").setup({
         sections = {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diff", "diagnostics" },
-          lualine_c = { "filename" },
+          lualine_c =  { { "navic", color_correction = "dynamic" } },
           -- right: LSP status
           lualine_x = {
             { "lsp_status" },   -- LSP name when attached
