@@ -13,8 +13,10 @@ require("mason-lspconfig").setup({
     ensure_installed = {
         "lua_ls",
         "rust_analyzer",
-        -- "jsonls",
+        "jsonls",
         -- "clangd",
     },
-    automatic_enable = true,
+    automatic_enable = {
+        exclude = { "clangd" },
+    },
 })
