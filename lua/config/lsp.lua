@@ -59,58 +59,69 @@ vim.lsp.config("rust_analyzer", {
   }
 })
 
-vim.lsp.config("clangd", {
+-- vim.lsp.config("clangd", {
+--   capabilities = capabilities,
+--   cmd = {
+--     "clangd",
+--     "--background-index",
+--     "--clang-tidy",
+--     "--header-insertion=never"
+--   }
+-- })
+
+
+vim.lsp.config("ccls", {
   capabilities = capabilities,
-  cmd = {
-    "clangd",
-    "--background-index",
-    "--clang-tidy",
-    "--header-insertion=never"
-  }
+  init_options = {
+    cache = {
+      directory = '.ccls-cache',
+    },
+    index = {
+      threads = 4,
+    },
+    clang = {
+      extraArgs = { '-I/usr/include', '-I/usr/local/include', '--gcc-toolchain=/usr' },
+      excludeArgs = {
+        "-mstack-protector-guard-reg=sp_el0",
+        "-mstack-protector-guard-offset=1384",
+        "-mabi=lp64",
+        "-fconserve-stack",
+        "-falign-jumps=1",
+        "-falign-loops=1",
+        "-fconserve-stack",
+        "-fmerge-constants",
+        "-fno-code-hoisting",
+        "-fno-schedule-insns",
+        "-fno-sched-pressure",
+        "-fno-var-tracking-assignments",
+        "-fsched-pressure",
+        "-mhard-float",
+        "-mindirect-branch-register",
+        "-mindirect-branch=thunk-inline",
+        "-mpreferred-stack-boundary=2",
+        "-mpreferred-stack-boundary=3",
+        "-mpreferred-stack-boundary=4",
+        "-mrecord-mcount",
+        "-mindirect-branch=thunk-extern",
+        "-mno-fp-ret-in-387",
+        "-mskip-rax-setup",
+        "--param=allow-store-data-races=0",
+        "-Wa,arch/x86/kernel/macros.s",
+        "-Wa,-",
+      },
+    },
+  },
 })
 
-
--- vim.lsp.config("ccls", {
---   init_options = {
---     cache = {
---       directory = '.ccls-cache',
---     },
---     index = {
---       threads = 4,
---     },
---     clang = {
---       extraArgs = { '-I/usr/include', '-I/usr/local/include', '--gcc-toolchain=/usr' },
---       excludeArgs = {
---         "-mstack-protector-guard-reg=sp_el0",
---         "-mstack-protector-guard-offset=1384",
---         "-mabi=lp64",
---         "-fconserve-stack",
---         "-falign-jumps=1",
---         "-falign-loops=1",
---         "-fconserve-stack",
---         "-fmerge-constants",
---         "-fno-code-hoisting",
---         "-fno-schedule-insns",
---         "-fno-sched-pressure",
---         "-fno-var-tracking-assignments",
---         "-fsched-pressure",
---         "-mhard-float",
---         "-mindirect-branch-register",
---         "-mindirect-branch=thunk-inline",
---         "-mpreferred-stack-boundary=2",
---         "-mpreferred-stack-boundary=3",
---         "-mpreferred-stack-boundary=4",
---         "-mrecord-mcount",
---         "-mindirect-branch=thunk-extern",
---         "-mno-fp-ret-in-387",
---         "-mskip-rax-setup",
---         "--param=allow-store-data-races=0",
---         "-Wa,arch/x86/kernel/macros.s",
---         "-Wa,-",
---       },
---     },
---   },
--- })
+-- ccls only for C-family buffers (not at startup for every filetype)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "c", "cpp", "objc", "objcpp", "cuda" },
+  callback = function()
+    vim.schedule(function()
+      vim.lsp.enable("ccls", true)
+    end)
+  end,
+})
 
 vim.lsp.config("lua_ls", {
   capabilities = capabilities,
