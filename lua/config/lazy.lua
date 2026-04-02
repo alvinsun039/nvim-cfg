@@ -12,6 +12,16 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
+local function shorten_path(path)
+  local parts = vim.split(path, "/")
+
+  for i = 1, #parts - 1 do
+    parts[i] = parts[i]:sub(1, 1)
+  end
+
+  return table.concat(parts, "/")
+end
+
 require("lazy").setup({
 
   -- Smart yank: only copy to system clipboard on intentional yank (y), supports tmux/OSC52
@@ -316,9 +326,21 @@ require("lazy").setup({
           close_icon = "",
           left_trunc_marker = "",
           right_trunc_marker = "",
-          max_name_length = 18,
+          tab_size = 0,
+          max_name_length = 24,
           max_prefix_length = 15,
           truncate_names = true,
+          name_formatter = function(buf)
+            local rel = vim.fn.fnamemodify(buf.path, ":.")
+            local filename = vim.fn.fnamemodify(rel, ":t")
+            local dir = vim.fn.fnamemodify(rel, ":h")
+
+            if dir == "." then
+              return filename
+            end
+
+            return filename .. " (" .. shorten_path(dir) .. ")"
+          end,
           diagnostics = "nvim_lsp",
           diagnostics_indicator = function(count, level)
             local icon = level:match("error") and " " or " "
