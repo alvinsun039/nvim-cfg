@@ -20,7 +20,8 @@ telescope.setup({
       "--with-filename",
       "--line-number",
       "--column",
-      "--binary-files=without-match",
+      "--smart-case",
+      "--hidden",
     },
 
     file_ignore_patterns = {
