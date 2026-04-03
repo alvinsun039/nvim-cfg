@@ -463,4 +463,53 @@ require("lazy").setup({
       vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
     end,
   },
+
+  {
+    "dstein64/nvim-scrollview",
+    config = function()
+      require('scrollview').setup({
+        -- Exclude these filetypes from showing scrollbars
+        excluded_filetypes = {'nerdtree', 'NvimTree'},
+        -- Show scrollbars in all windows (true for current window only)
+        current_only = false,
+        -- Position scrollbar at the right edge of window
+        base = 'right',
+        -- Width of the scrollbar in character cells
+        scrollbar_width = 1,
+        -- Distance from window edge to scrollbar
+        column = 1,
+        -- Sign groups to enable on startup
+        signs_on_startup = {
+          'diagnostics',
+          'search',
+          'marks',
+          'cursor',
+          'folds',
+          'trail',
+          'keywords',
+          'textwidth',
+        },
+        -- Diagnostic severity levels to show
+        diagnostics_severities = {'ERROR', 'WARN', 'INFO', 'HINT'},
+        -- Transparency of scrollbar window (0-100)
+        winblend = 50,
+        -- Highlight group for scrollbar
+        scrollbar_highlight = 'Normal',
+        -- Highlight group for search signs
+        search_highlight = 'Search',
+        -- Enable mouse hover highlighting
+        mousemoveevent = true,
+        -- Configuration for keyword signs
+        keywords = {
+          FIX = { text = 'F' },
+          FIXME = { text = 'F' },
+          HACK = { text = 'H' },
+          TODO = { text = 'T' },
+          WARN = { text = 'W' },
+          WARNING = { text = 'W' },
+          XXX = { text = 'X' },
+        },
+      })
+    end
+  },
 })
