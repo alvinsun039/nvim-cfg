@@ -345,6 +345,11 @@ require("lazy").setup({
             local filename = vim.fn.fnamemodify(rel, ":t")
             local dir = vim.fn.fnamemodify(rel, ":h")
 
+            -- Handle unnamed files
+            if filename == "" or filename == "." then
+              return "[No Name]"
+            end
+
             if dir == "." then
               return filename
             end
