@@ -59,15 +59,15 @@ vim.lsp.config("rust_analyzer", {
   }
 })
 
--- vim.lsp.config("clangd", {
---   capabilities = capabilities,
---   cmd = {
---     "clangd",
---     "--background-index",
---     "--clang-tidy",
---     "--header-insertion=never"
---   }
--- })
+vim.lsp.config("clangd", {
+  capabilities = capabilities,
+  cmd = {
+    "clangd",
+    "--background-index",
+    "--clang-tidy",
+    "--header-insertion=never"
+  }
+})
 
 
 vim.lsp.config("ccls", {
@@ -113,12 +113,45 @@ vim.lsp.config("ccls", {
   },
 })
 
--- ccls only for C-family buffers (not at startup for every filetype)
+-- Check if it's a Linux kernel project
+local function is_linux_kernel_project()
+  -- Find project root directory (via .git directory or README file)
+  local root_dir = vim.fn.finddir('.git/..', vim.fn.expand('%:p:h') .. ';')
+  if root_dir == '' then
+    -- If there's no .git directory, try to find README file
+    root_dir = vim.fn.findfile('README', vim.fn.expand('%:p:h') .. ';')
+    if root_dir ~= '' then
+      root_dir = vim.fn.fnamemodify(root_dir, ':h')
+    else
+      return false
+    end
+  end
+
+  -- Check if README file exists
+  local readme_path = root_dir .. '/README'
+  if vim.fn.filereadable(readme_path) == 0 then
+    return false
+  end
+
+  -- Read first line of README file
+  local first_line = vim.fn.readfile(readme_path, '', 1)[1]
+  if first_line and string.match(first_line, '^Linux kernel') then
+    return true
+  end
+
+  return false
+end
+
+-- Automatically enable appropriate LSP server for C-family files
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "c", "cpp", "objc", "objcpp", "cuda" },
   callback = function()
     vim.schedule(function()
-      vim.lsp.enable("ccls", true)
+      if is_linux_kernel_project() then
+        vim.lsp.enable("ccls", true)
+      else
+        vim.lsp.enable("clangd", true)
+      end
     end)
   end,
 })
