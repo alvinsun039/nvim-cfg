@@ -432,6 +432,7 @@ require("lazy").setup({
         { "<leader>e", group = "File tree" },
         { "<leader>f", group = "Find (Telescope)" },
         { "<leader>h", group = "Git Hunk" },
+        { "<leader>m", group = "Markdown" },
         { "<leader>p", group = "Pantran (translate)" },
         { "<leader>r", group = "LSP" },
         { "<leader>t", group = "Terminal" },
@@ -528,5 +529,29 @@ require("lazy").setup({
         },
       })
     end
+  },
+
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" },
+    opts = {},
+    keys = {
+      { "<leader>mt", "<cmd>RenderMarkdown toggle<CR>", desc = "Toggle markdown render" },
+    },
+  },
+
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && npm install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+    keys = {
+      { "<leader>mp", "<cmd>MarkdownPreviewToggle<CR>", desc = "Toggle markdown preview" },
+      { "<leader>ms", "<cmd>MarkdownPreviewStop<CR>", desc = "Stop markdown preview" },
+    },
   },
 })
