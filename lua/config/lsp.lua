@@ -32,6 +32,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     if client and client.name == "rust_analyzer" then
       vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = args.buf,
+        callback = function()
+          vim.lsp.buf.format({ bufnr = args.buf, async = false, name = "rust_analyzer" })
+        end,
+      })
     end
 
   end
@@ -48,6 +54,15 @@ vim.lsp.config("rust_analyzer", {
         enable = true
       },
       checkOnSave = false,
+      imports = {
+        granularity = {
+          group = "module",
+          enforce = true,
+        },
+      },
+      rustfmt = vim.fn.executable("rustup") == 1 and {
+        overrideCommand = { "rustfmt", "+nightly", "--config", "imports_layout=Vertical" },
+      } or nil,
       inlayHints = {
         enable = true,
         typeHints = { enable = true },
